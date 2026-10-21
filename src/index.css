@@ -1,0 +1,185 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+@import "@fontsource/kaushan-script/400.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Space Mono', ui-monospace, monospace;
+    --font-script: 'Kaushan Script', cursive;
+
+    /* original SCSS palette */
+    --color-cosmos-100: var(--cosmos-100);
+    --color-cosmos-200: var(--cosmos-200);
+    --color-cosmos-300: var(--cosmos-300);
+    --color-cosmos-400: var(--cosmos-400);
+    --color-star-200: var(--star-200);
+    --color-star-300: var(--star-300);
+    --color-star-400: var(--star-400);
+    --color-star-500: var(--star-500);
+    --color-lavender: var(--lavender);
+    --color-peach: var(--peach);
+
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* The site is always on the dark cosmos theme */
+:root {
+    --cosmos-100: hsl(290 34% 20%);
+    --cosmos-200: hsl(290 34% 15%);
+    --cosmos-300: hsl(290 34% 10%);
+    --cosmos-400: hsl(290 34% 4%);
+    --star-200: hsl(272 57% 100%);
+    --star-300: hsl(272 57% 95%);
+    --star-400: hsl(272 57% 85%);
+    --star-500: hsl(272 57% 75%);
+    --lavender: hsl(265 38% 89%);
+    --peach: hsl(25 43% 79%);
+
+    --background: var(--cosmos-300);
+    --foreground: var(--star-300);
+    --card: hsl(270 40% 92% / 6%);
+    --card-foreground: var(--star-300);
+    --popover: hsl(290 34% 14%);
+    --popover-foreground: var(--star-300);
+    --primary: var(--lavender);
+    --primary-foreground: var(--cosmos-300);
+    --secondary: hsl(265 38% 89% / 12%);
+    --secondary-foreground: var(--star-300);
+    --muted: hsl(265 38% 89% / 10%);
+    --muted-foreground: hsl(272 20% 72%);
+    --accent: hsl(265 38% 89% / 14%);
+    --accent-foreground: var(--star-200);
+    --destructive: hsl(0 53% 63%);
+    --border: hsl(265 38% 89% / 14%);
+    --input: hsl(265 38% 89% / 18%);
+    --ring: var(--star-500);
+    --radius: 0.75rem;
+
+    color-scheme: dark;
+}
+
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
+    }
+    html {
+        @apply font-sans scroll-smooth;
+        scroll-padding-top: 5rem;
+        /* slide-in animations start off-screen; never let them cause sideways scrolling */
+        overflow-x: clip;
+    }
+    body {
+        @apply bg-background text-foreground antialiased;
+    }
+    ::selection {
+        background: var(--lavender);
+        color: var(--cosmos-300);
+    }
+    /* scrollbar from the original site */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--cosmos-300); }
+    ::-webkit-scrollbar-thumb {
+        background: hsl(265 38% 89% / 35%);
+        border-radius: 999px;
+        border: 2px solid var(--cosmos-300);
+    }
+    ::-webkit-scrollbar-thumb:hover { background: hsl(265 38% 89% / 60%); }
+}
+
+@layer components {
+    .glass {
+        background: linear-gradient(140deg, hsl(270 40% 92% / 9%), hsl(270 40% 92% / 3%));
+        border: 1px solid hsl(265 38% 89% / 14%);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    .text-glow {
+        text-shadow: 0 0 18px hsl(272 57% 85% / 45%);
+    }
+    .text-gradient {
+        background: linear-gradient(90deg, var(--star-200), var(--lavender) 40%, var(--peach));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+}
+
+/* ---------- starry background (same SVG as the original site) ---------- */
+.starfield {
+    position: fixed;
+    inset: -400px;
+    background-image: url("/assets/decorators/stars.svg");
+    pointer-events: none;
+    will-change: transform;
+}
+.starfield--near {
+    background-size: 360px;
+    animation: twinkle 6s ease-in-out infinite alternate;
+}
+.starfield--far {
+    background-size: 220px;
+    opacity: 0.45;
+    animation: twinkle 9s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+    from { filter: brightness(0.8); }
+    to { filter: brightness(1.35); }
+}
+
+/* ---------- comets (same shape + MakeItRain motion as the original) ---------- */
+.comet {
+    position: absolute;
+    left: -10vw;
+    top: -10vh;
+    height: auto;
+    transform: scaleX(-1);
+    fill: url(#comet-gradient);
+    opacity: 0;
+    filter: drop-shadow(0 0 6px hsl(25 43% 79% / 60%));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .comet {
+        animation: make-it-rain 10s infinite;
+    }
+}
+
+@keyframes make-it-rain {
+    0% { opacity: 0; transform: scaleX(-1) translate(0, 0); }
+    70% { opacity: 0.4; transform: scaleX(-1) translate(0, 0); }
+    100% { opacity: 1; transform: scaleX(-1) translate(-101vw, 101vmax); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .starfield { animation: none; }
+}
